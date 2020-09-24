@@ -2576,7 +2576,7 @@ def license_options(existing_license_id=None):
     offered. Always includes the existing_license_id, if supplied.
     '''
     register = model.Package.get_license_register()
-    sorted_licenses = sorted(register.values(), key=lambda x: x.title)
+    sorted_licenses = sorted(register.values(), key=lambda x: x.title * (x.id != 'notspecified') )
     license_ids = [license.id for license in sorted_licenses]
     if existing_license_id and existing_license_id not in license_ids:
         license_ids.insert(0, existing_license_id)
