@@ -50,10 +50,21 @@ def owner_org_validator(key, data, errors, context):
     if not group:
         raise Invalid(_('Organization does not exist'))
     group_id = group.id
-    if not context.get(u'ignore_auth', False) and not(user.sysadmin or
-           authz.has_user_permission_for_group_or_org(
-               group_id, user.name, 'create_dataset')):
-        raise Invalid(_('You cannot add a dataset to this organization'))
+
+    if context.get(u'ignore_auth', False) or user.sysadmin:
+        data[key] = group_id
+        return
+
+    package = context.get('package')
+
+    if not package:
+        if not authz.has_user_permission_for_group_or_org( group_id, user.name, 'create_dataset'):
+            raise Invalid(_('You cannot add a dataset to this organization'))
+    elif group_id != package.owner_org:
+        if not (authz.has_user_permission_for_group_or_org( group_id, user.name, 'create_dataset') and
+            authz.has_user_permission_for_group_or_org( package.owner_org, user.name, 'delete_dataset')):
+            raise Invalid(_('You cannot change the owner of this dataset'))
+
     data[key] = group_id
 
 
