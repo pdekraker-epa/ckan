@@ -7,7 +7,7 @@ import datetime
 import time
 import json
 
-from ckan.common import config
+
 import ckan.common as converters
 import six
 from six import text_type
@@ -29,7 +29,7 @@ import ckan.lib.datapreview
 import ckan.lib.app_globals as app_globals
 
 
-from ckan.common import _, request
+from ckan.common import _, request, config
 
 log = logging.getLogger(__name__)
 

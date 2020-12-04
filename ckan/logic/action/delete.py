@@ -16,7 +16,7 @@ import ckan.lib.dictization.model_dictize as model_dictize
 import ckan.lib.api_token as api_token
 from ckan import authz
 
-from ckan.common import _
+from ckan.common import _, config
 
 
 log = logging.getLogger('ckan.logic')
